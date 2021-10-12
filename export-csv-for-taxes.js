@@ -12,7 +12,7 @@ function onOpen() {
 function exportCSVForTaxes() {
   const sheet = SpreadsheetApp.getActiveSheet();
   const sheetName = sheet.getName();
-  const fileName = sheetName + '_cryptotrader_tax-9.csv';
+  const fileName = sheetName + '_cryptotrader_tax-1.csv';
   const csvFile = convertRangeToCsvFile(fileName, sheet);
   var file = DriveApp.createFile(fileName, csvFile);
   Browser.msgBox('Done! ' + fileName + ' created.');
@@ -21,28 +21,29 @@ function exportCSVForTaxes() {
 function convertRangeToCsvFile(csvFileName, sheet) {
   let activeRange = sheet.getDataRange();
   try {
-    let data = activeRange.getValues();
-    let newData = [];
+    let readData = activeRange.getValues();
+    let writeData = [];
     let csvFile = undefined;
-    // loop through the data in the range and build a string with the csv data
-    if (data.length > 1) {
+    // loop through the readData in the range and build a string for the csv with the writeData 
+    if (readData.length > 1) {
       var csv = "";
-      for (var row = 7; row < data.length; row++) {      
-        newData[row] = [];
-        newData[row].push("\"" + data[row][0] + "\"");
-        newData[row].push("\"" + data[row][1] + "\"");
-        const baseAmount = Math.abs(data[row][2]);
-        newData[row].push("\"" + baseAmount + "\"");
-        newData[row].push("\"" + data[0][0] + "\"");
-        const quoteAmount = baseAmount * data[row][6]; // baseAmount * price
-        newData[row].push("\"" + quoteAmount + "\"");                
+      for (var row = 7; row < readData.length; row++) {      
+        writeData[row] = [];
+        writeData[row].push("\"" + readData[row][0] + "\"");
+        writeData[row].push("\"" + readData[row][9] + "\"");
+        writeData[row].push("\"" + readData[row][1] + "\"");
+        const baseAmount = Math.abs(readData[row][2]);
+        writeData[row].push("\"" + baseAmount + "\"");
+        writeData[row].push("\"" + readData[0][0] + "\"");
+        const quoteAmount = baseAmount * readData[row][6]; // baseAmount * price
+        writeData[row].push("\"" + quoteAmount + "\"");                
         // join each row's columns
         // add a carriage return to end of each row, except for the last one
-        if (row >= 7 && row < data.length-1) {
-          csv += newData[row].join(",") + "\r\n";
+        if (row >= 7 && row < readData.length-1) {
+          csv += writeData[row].join(",") + "\r\n";
         }
         else if (row >= 7) {
-          csv += newData[row].join(",");
+          csv += writeData[row].join(",");
         }
       }
       csvFile = csv;

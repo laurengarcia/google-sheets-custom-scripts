@@ -12,7 +12,7 @@ function onOpen() {
 function exportCSVForTaxes() {
   const sheet = SpreadsheetApp.getActiveSheet();
   const sheetName = sheet.getName();
-  const fileName = sheetName + '_cryptotrader_tax-7.csv';
+  const fileName = sheetName + '_cryptotrader_tax-9.csv';
   const csvFile = convertRangeToCsvFile(fileName, sheet);
   var file = DriveApp.createFile(fileName, csvFile);
   Browser.msgBox('Done! ' + fileName + ' created.');
@@ -24,35 +24,18 @@ function convertRangeToCsvFile(csvFileName, sheet) {
     let data = activeRange.getValues();
     let newData = [];
     let csvFile = undefined;
-
     // loop through the data in the range and build a string with the csv data
     if (data.length > 1) {
       var csv = "";
-      for (var row = 7; row < data.length; row++) {
+      for (var row = 7; row < data.length; row++) {      
         newData[row] = [];
-        for (var col = 0; col < data[row].length; col++) {
-            
-              // add logic here to build new cryptotrader.tax columns instead
-              if (col === 0 || col === 1) {
-                newData[row].push("\"" + data[row][col] + "\"");
-              }
-              if (col === 2) { 
-                const baseAmount = Math.abs(data[row][col]);
-                newData[row].push("\"" + baseAmount + "\"");
-              }
-              if (col === 3 ) { 
-                newData[row].push("\"" + data[0][0] + "\"");
-              } 
-              if (col === 6) {
-                const quoteAmount = data[row][col] * Math.abs(data[row][2]); // price * baseAmount
-                newData[row].push = "\"" + quoteAmount + "\"";                
-              }
-              else {
-                // do nothing
-              }
-
-        }
-
+        newData[row].push("\"" + data[row][0] + "\"");
+        newData[row].push("\"" + data[row][1] + "\"");
+        const baseAmount = Math.abs(data[row][2]);
+        newData[row].push("\"" + baseAmount + "\"");
+        newData[row].push("\"" + data[0][0] + "\"");
+        const quoteAmount = baseAmount * data[row][6]; // baseAmount * price
+        newData[row].push("\"" + quoteAmount + "\"");                
         // join each row's columns
         // add a carriage return to end of each row, except for the last one
         if (row >= 7 && row < data.length-1) {

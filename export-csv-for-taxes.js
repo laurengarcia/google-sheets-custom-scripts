@@ -12,7 +12,7 @@ function onOpen() {
 function exportBuySellCSVForTaxes() {
   const sheet = SpreadsheetApp.getActiveSheet();
   const sheetName = sheet.getName();
-  const fileName = sheetName + '_cryptotrader_tax-3.csv';
+  const fileName = sheetName + '_cryptotrader_tax-2020.csv';
   const csvFile = convertRangeToCsvFile(fileName, sheet);
   var file = DriveApp.createFile(fileName, csvFile);
   Browser.msgBox('Done! ' + fileName + ' created.');
@@ -32,8 +32,13 @@ function convertRangeToCsvFile(csvFileName, sheet) {
         let tradeType = readData[row][1];
         if (tradeType === 'BUY' || tradeType === 'SELL') {    
           writeData[row] = [];
-          writeData[row].push("\"" + readData[row][0] + "\""); // UTC Timestamp
-          writeData[row].push("\"" + readData[row][9] + "\""); // Exchange
+          const utcTimestamp = Utilities.formatDate(new Date(readData[row][0]), 'GMT', "MM/dd/yyy 00:00:00");
+          writeData[row].push("\"" + utcTimestamp + "\""); // UTC Timestamp
+          const rawExchangeMetadata = readData[row][9]; 
+          const exchangeName = rawExchangeMetadata ? rawExchangeMetadata.split(":")[0] : "";
+          const blockExplorerLink = rawExchangeMetadata.match(/https:\/\/.*/gi);
+          const exchange = blockExplorerLink ? `${exchangeName}: ${blockExplorerLink[0]}` : exchangeName;
+          writeData[row].push("\"" + exchange + "\""); // Exchange
           writeData[row].push("\"" + tradeType + "\""); // Trade Type
           const baseAmount = Math.abs(readData[row][2]); 
           writeData[row].push("\"" + readData[0][0] + "\""); // Base Currency
@@ -42,7 +47,7 @@ function convertRangeToCsvFile(csvFileName, sheet) {
           const quoteAmount = baseAmount * readData[row][6]; // Quote Amount -- baseAmount * price
           writeData[row].push("\"" + quoteAmount + "\""); // Quote Amount               
           writeData[row].push("\"USD\""); // Fee Currency -- always converted to USD in these spreadsheets
-          writeData[row].push("\"0\""); // Fee Amount -- set to 0 here, look up in a later script
+          writeData[row].push("\"0\""); // Fee Amount -- set to 0 here, merge fee data in another script
 
           // join each row's columns
           // add a carriage return to end of each row, except for the last one

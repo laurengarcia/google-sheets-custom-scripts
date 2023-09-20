@@ -14,16 +14,14 @@ const cellToCoinIds = {
   'D6': { 'CG': 'the-graph', 'KK': 'GRTUSD' },
   'D7': { 'CG': 'matic-network', 'KK': 'MATICUSD' },
   'D8': { 'CG': 'cosmos', 'KK': 'ATOMUSD' },
-  'D9': { 'CG': 'terra-luna', 'KK': 'LUNAUSD' },
-  'D10': { 'CG': 'terra-luna2', 'KK': 'LUNA2USD' },
-  'D11': { 'CG': 'curve-dao-token', 'KK': 'CRVUSD' },
-  'D12': { 'CG': 'uniswap', 'KK': 'UNIUSD' },
-  'D13': { 'CG': 'truefi', 'KK': 'TRUUSD' },
-  'D14': { 'CG': 'aave', 'KK': 'AAVEUSD' },
-  'D15': { 'CG': 'radicle', 'KK': 'RADUSD' },
-  'D16': { 'CG': 'mantra-dao' },
-  'D17': { 'CG': 'bzx-protocol' },
-  'D18': { 'CG': 'ethereum-name-service', 'KK': 'ENSUSD' },
+  'D9': { 'CG': 'terra-luna2', 'KK': 'LUNA2USD' },
+  'D10': { 'CG': 'curve-dao-token', 'KK': 'CRVUSD' },
+  'D11': { 'CG': 'uniswap', 'KK': 'UNIUSD' },
+  'D12': { 'CG': 'aave', 'KK': 'AAVEUSD' },
+  'D13': { 'CG': 'radicle', 'KK': 'RADUSD' },
+  'D14': { 'CG': 'maple' },
+  'D15': { 'CG': 'bzx-protocol' },
+  'D16': { 'CG': 'ethereum-name-service', 'KK': 'ENSUSD' },
 };
 
 // CoinGecko API:
@@ -95,3 +93,4 @@ function getKrakenPrices() {
     }
   });
 };
+

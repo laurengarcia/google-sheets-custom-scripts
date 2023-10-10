@@ -48,7 +48,6 @@ function getCoinGeckoPrices() {
     if (coinId) {
       const coinData = data[coinId];
       const price = coinData ? coinData.usd : 'N/A';
-      sheet.getRange(cell).setValue(price);
       if (price !== 'N/A') {
         Logger.log(cell + " " + coinId + " " + price);
         sheet.getRange(cell).setValue(price);

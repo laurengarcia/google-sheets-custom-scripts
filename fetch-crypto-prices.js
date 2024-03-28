@@ -22,6 +22,7 @@ const cellToCoinIds = {
   'D14': { 'CG': 'maple' },
   'D15': { 'CG': 'bzx-protocol' },
   'D16': { 'CG': 'ethereum-name-service', 'KK': 'ENSUSD' },
+  'D17': { 'CG': 'chihuahua-token' }
 };
 
 // CoinGecko API:
@@ -40,21 +41,35 @@ function getPricesFromCoinGeckoApi(coinIds) {
   return data;
 }
 
-function getCoinGeckoPrices() {
-  const data = getPricesFromCoinGeckoApi();
-  const sheet = SpreadsheetApp.getActiveSheet();
-  Object.keys(cellToCoinIds).forEach((cell) => {
-    const coinId = cellToCoinIds[cell].CG;
-    if (coinId) {
-      const coinData = data[coinId];
-      const price = coinData ? coinData.usd : 'N/A';
-      if (price !== 'N/A') {
-        Logger.log(cell + " " + coinId + " " + price);
-        sheet.getRange(cell).setValue(price);
+function callGetCoinGeckoPrices(attempt) {
+  if (attempt < 10) {
+      Utilities.sleep(Math.random() * 10000); // Random sleep up to 10 seconds; setTimeout not defined in sheets scripts
+      try {
+        const data = getPricesFromCoinGeckoApi();
+        const sheet = SpreadsheetApp.getActiveSheet();
+        Object.keys(cellToCoinIds).forEach((cell) => {
+          const coinId = cellToCoinIds[cell].CG;
+          if (coinId) {
+            const coinData = data[coinId];
+            const price = coinData ? coinData.usd : 'N/A';
+            if (price !== 'N/A') {
+              Logger.log(cell + " " + coinId + " " + price);
+              sheet.getRange(cell).setValue(price);
+            }
+          }
+        });
+      } catch (err) {
+        Logger.log("Error occurred: " + err.message);
+        callGetCoinGeckoPrices(attempt); // Retry on error
       }
-    }
-  });
+  } else {
+    Logger.log("Max attempts reached. Stopping recursion.");
+  }
 };
+
+function getCoinGeckoPrices() {
+  callGetCoinGeckoPrices(0);
+}
 
 // Use Kraken API:
 // https://docs.kraken.com/rest/#tag/Market-Data/operation/getTickerInformation

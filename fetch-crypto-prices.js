@@ -14,15 +14,16 @@ const cellToCoinIds = {
   'D6': { 'CG': 'the-graph', 'KK': 'GRTUSD' },
   'D7': { 'CG': 'matic-network', 'KK': 'MATICUSD' },
   'D8': { 'CG': 'cosmos', 'KK': 'ATOMUSD' },
-  'D9': { 'CG': 'terra-luna2', 'KK': 'LUNA2USD' },
-  'D10': { 'CG': 'curve-dao-token', 'KK': 'CRVUSD' },
-  'D11': { 'CG': 'uniswap', 'KK': 'UNIUSD' },
-  'D12': { 'CG': 'aave', 'KK': 'AAVEUSD' },
-  'D13': { 'CG': 'radicle', 'KK': 'RADUSD' },
-  'D14': { 'CG': 'maple' },
-  'D15': { 'CG': 'bzx-protocol' },
-  'D16': { 'CG': 'ethereum-name-service', 'KK': 'ENSUSD' },
-  'D17': { 'CG': 'chihuahua-token' }
+  'D9': { 'CG': 'sui', 'KK': 'SUIUSD' },
+  'D10': { 'CG': 'terra-luna2', 'KK': 'LUNA2USD' },
+  'D11': { 'CG': 'curve-dao-token', 'KK': 'CRVUSD' },
+  'D12': { 'CG': 'uniswap', 'KK': 'UNIUSD' },
+  'D13': { 'CG': 'aave', 'KK': 'AAVEUSD' },
+  'D14': { 'CG': 'radicle', 'KK': 'RADUSD' },
+  'D15': { 'CG': 'maple' },
+  'D16': { 'CG': 'bzx-protocol' },
+  'D17': { 'CG': 'ethereum-name-service', 'KK': 'ENSUSD' },
+  'D18': { 'CG': 'chihuahua-token' }
 };
 
 // CoinGecko API:
@@ -43,7 +44,7 @@ function getPricesFromCoinGeckoApi(coinIds) {
 
 function callGetCoinGeckoPrices(attempt) {
   if (attempt < 10) {
-      Utilities.sleep(Math.random() * 10000); // Random sleep up to 10 seconds; setTimeout not defined in sheets scripts
+      Utilities.sleep(Math.random() * 5000); // Random sleep; setTimeout not defined in sheets scripts
       try {
         const data = getPricesFromCoinGeckoApi();
         const sheet = SpreadsheetApp.getActiveSheet();
